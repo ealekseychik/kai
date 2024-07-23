@@ -247,7 +247,7 @@ int editorRowRxToCx(erow *row, int rx) {
 
     for (cx = 0; cx < row->size; cx++) {
         if (row->chars[cx] == '\t')
-            cur_rx += (KILO_TAB_STOP - 1) - (cur_rx % KILO_TAB_STOP);
+            cur_rx += (KAI_TAB_STOP - 1) - (cur_rx % KAI_TAB_STOP);
 
         cur_rx++;
         if (cur_rx > rx) return cx;
@@ -544,13 +544,13 @@ char *editorPrompt(char *prompt, void (*callback)(char *, int)) {
             if (buflen != 0) buf[--buflen] = '\0';
         } else if (ch == '\x1b') {
             editorSetStatusMessage("");
-            if (callback) callback(buf, c);
+            if (callback) callback(buf, ch);
             free(buf);
             return NULL;
         } else if (ch == '\r') {
             if (buflen != 0) {
                 editorSetStatusMessage("");
-                if (callback) callback(buf, c);
+                if (callback) callback(buf, ch);
                 return buf;
             }
         } else if (!iscntrl(ch) && ch < 128) {
@@ -563,7 +563,7 @@ char *editorPrompt(char *prompt, void (*callback)(char *, int)) {
             buf[buflen] = '\0';
         }
 
-        if (callback) callback(buf, c);
+        if (callback) callback(buf, ch);
     }
 }
 
